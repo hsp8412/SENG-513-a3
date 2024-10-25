@@ -1,0 +1,82 @@
+html,
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box; /* Fixes overflow issue */
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  padding: 30px;
+  min-width: 500px;
+}
+
+.title {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border: #f1f1f1;
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+}
+
+.input-group label {
+  font-weight: bold;
+}
+
+.btn {
+  font-size: large;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #333;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-up-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-to-login-link {
+  text-align: center;
+  margin-top: 20px;
+}

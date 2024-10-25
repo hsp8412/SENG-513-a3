@@ -4,6 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile-web
     container_name: web
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "8800:80"
     volumes:
