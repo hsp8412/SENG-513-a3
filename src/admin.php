@@ -1,9 +1,17 @@
 <?php
 session_start();
+include 'db.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['name'] !== 'admin') {
-    header("Location: Index.php");
-    exit();
+// if (!isset($_SESSION['user_id']) || $_SESSION['name'] !== 'admin') {
+//     header("Location: /");
+//     exit();
+// }
+// Fetch all users
+try {
+    $stmt = $pdo->query("SELECT id, username FROM users"); // Adjust columns as necessary
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching users: " . $e->getMessage());
 }
 ?>
 
@@ -17,13 +25,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['name'] !== 'admin') {
 </head>
 
 <body>
-    <h2>Welcome to the Admin Page, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+    <div>
 
-    <!-- Admin actions go here, like managing users -->
-    <p>Here you can manage users, view reports, etc.</p>
-
-    <!-- Log out link -->
-    <!-- <a href="logout.php">Log Out</a> -->
+        <a href="logout.php">Log Out</a>
+    </div>
 </body>
 
 </html>

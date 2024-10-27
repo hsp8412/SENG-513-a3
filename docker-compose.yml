@@ -18,6 +18,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-db
+      args:
+        - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+        - ADMIN_SALT=${ADMIN_SALT}
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

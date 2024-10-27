@@ -1,5 +1,8 @@
 FROM mysql:8.0-debian
 
+ARG ADMIN_PASSWORD_HASH
+ARG ADMIN_SALT
+
 # Set the desired directories
 ENV MYSQL_LOG_DIR /var/log/mysql
 ENV MYSQL_DATA_DIR /var/lib/mysql
@@ -19,7 +22,14 @@ RUN chown -R mysql:mysql "$MYSQL_DATA_DIR" && chmod 700 "$MYSQL_DATA_DIR"
 COPY my.cnf /etc/mysql/conf.d/
 RUN chmod 644 /etc/mysql/conf.d/my.cnf
 
-COPY ./scripts/ /docker-entrypoint-initdb.d/
+COPY ./scripts/init.sql /docker-entrypoint-initdb.d/
+COPY ./scripts/script.sh /
+
+
+RUN chmod +x /script.sh
+RUN /script.sh ADMIN_PASSWORD_HASH "${ADMIN_PASSWORD_HASH}"
+RUN /script.sh ADMIN_SALT "${ADMIN_SALT}"
+
 
 # Install additional packages (if needed)
 RUN apt-get update && \

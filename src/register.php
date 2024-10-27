@@ -46,15 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($errors)) {
-        // Hash the password
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $add_user_query = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $salt = bin2hex(random_bytes(16));
+        $saltedPassword = $salt . $password;
+        $hashedPassword = password_hash($saltedPassword, PASSWORD_BCRYPT);
+
+        $add_user_query = "INSERT INTO users (username, password, salt) VALUES (?, ?, ?)";
         $stmt = $pdo->prepare($add_user_query);
 
         // Execute the statement and bind the parameters directly in the execute() method
-        if ($stmt->execute([$username, $hashedPassword])) {
+        if ($stmt->execute([$username, $hashedPassword, $salt])) {
             // Redirect to index if registration is successful
-            header('Location: index.php');
+            header('Location: /');
             exit();
         } else {
             // Handle error if the query fails
@@ -105,8 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <div class="actions-container">
-                    <button type="submit" class="btn">Login</button>
-                    <a class="back-to-login-link" href="index.php">Back to login</a>
+                    <button type="submit" class="btn">Register</button>
+                    <a class="back-to-login-link" href="/">Back to login</a>
                 </div>
             </form>
         </div>

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($errors)) {
-        $sql = "SELECT * FROM users WHERE username = ?";
+        $sql = "SELECT * FROM admin_users WHERE username = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,8 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($user && password_verify($user['salt'] . $password, $user['password'])) {
             $_SESSION['username'] = $user['username'];
             $_SESSION['user_id'] = $user['id'];
+            $_SESSION['is_admin'] = true;
 
-            header('Location: dashboard.php');
+            header('Location: admin.php');
             exit();
         } else {
             $errors['login'] = 'Invalid username or password.';
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 
 <head>
-    <title>Login</title>
+    <title>Admin Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./styles/styles.css">
@@ -49,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="content">
         <div class="card">
-            <h1 class="title">Login</h1>
+            <h1 class="title">Admin Login</h1>
             <form method="POST">
                 <div class="input-group">
                     <label for="username">Username:</label>
@@ -73,10 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p style="color:red;"><?php echo htmlspecialchars($errors['login']); ?></p>
                     <?php endif; ?>
                     <button type="submit" class="btn">Login</button>
-                    <a class="sign-up-link" href="admin_login.php">Admin Login</a>
-                    <p class="sign-up-link">Don't have an account? <a href="register.php">Sign up</a></p>
                 </div>
             </form>
+            <a href="/">Back to User Login</a>
         </div>
     </div>
 </body>
