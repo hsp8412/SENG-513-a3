@@ -19,7 +19,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   padding: 30px;
-  min-width: 500px;
+  width: 500px;
 }
 
 .title {
@@ -86,4 +86,81 @@ input {
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+/* table style */
+table {
+  border-collapse: collapse;
+  width: 500px;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 8px;
+  border: solid #ddd;
+}
+
+th {
+  background-color: #6495ed;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.admin-login-back-link {
+  padding-top: 10px;
+}
+
+.admin-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.admin-title {
+  font-weight: bold;
+  font-size: 35px;
+  color: #6495ed;
+}
+
+.admin-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in;
+}
+
+.admin-btn:hover {
+  background-color: rgb(225, 71, 71);
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-bar {
+  background-color: #b0c5ec;
+  margin-bottom: 10px;
+  width: 300px;
+}
+
+.reset-pwd-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }

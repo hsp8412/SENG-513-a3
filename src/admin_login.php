@@ -2,6 +2,16 @@
 session_start();
 include 'db.php';
 
+if (isset($_SESSION['user_id'])) {
+    $is_admin = $_SESSION['is_admin'];
+    if ($is_admin) {
+        header('Location: admin.php');
+    } else {
+        header('Location: dashboard.php');
+    }
+    exit();
+}
+
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -74,9 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p style="color:red;"><?php echo htmlspecialchars($errors['login']); ?></p>
                     <?php endif; ?>
                     <button type="submit" class="btn">Login</button>
+                    <a href="/" class="admin-login-back-link">Back to User Login</a>
                 </div>
             </form>
-            <a href="/">Back to User Login</a>
+
         </div>
     </div>
 </body>
