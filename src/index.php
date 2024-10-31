@@ -2,6 +2,10 @@
 session_start();
 include 'db.php';
 
+// Retrieve and clear errors from session
+$errors = [];
+$success_message = '';
+
 if (isset($_SESSION['user_id'])) {
     $is_admin = $_SESSION['is_admin'];
     if ($is_admin) {
@@ -12,7 +16,11 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
-$errors = [];
+
+if (isset($_SESSION['success'])) {
+    $success_message = $_SESSION['success'];
+    unset($_SESSION['success']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
@@ -45,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
     <div class="content">
+        <?php if ($success_message != ''): ?>
+            <p style="color: green;"><?php echo htmlspecialchars($success_message); ?></p>
+        <?php endif; ?>
+        <!-- <p style="color: green;">Registration successful! Please log in.</p> -->
         <div class="card">
+
             <h1 class="title">Login</h1>
             <form method="POST">
                 <div class="input-group">

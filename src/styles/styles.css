@@ -9,6 +9,7 @@ body {
 
 .content {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -163,4 +164,17 @@ tr:nth-child(even) {
   display: flex;
   justify-content: center;
   padding: 20px;
+}
+
+.unauthorize-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.unauthorize-container p {
+  font-size: 32px;
+  font-weight: bold;
 }

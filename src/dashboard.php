@@ -2,6 +2,8 @@
 session_start();
 include 'db.php';
 
+$errors = [];
+
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: unauthorized.php');
@@ -52,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,21 +73,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     <div class="reset-pwd-container">
         <div class="card">
-            <h2 class="title">Reset Password</h2>
+            <h1 class="title">Reset Password</h1>
             <form action="" method="POST">
                 <div class="input-group">
                     <label for="current_password">Current Password:</label>
-                    <input type="password" id="current_password" name="current_password"
-                        value="<?php echo isset($$current_password) ? htmlspecialchars($current_password) : ''; ?>"
-                        required>
-                    <?php if (isset($errors['username'])): ?>
+                    <input type="password" id="current_password" name="current_password" required>
+                    <?php if (isset($errors['current_password'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['current_password']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="input-group">
                     <label for="new_password">New Password:</label>
-                    <input type="password" id="new_password" name="new_password"
-                        value="<?php echo isset($new_password) ? htmlspecialchars($new_password) : ''; ?>" required>
+                    <input type="password" id="new_password" name="new_password" required>
                     <?php if (isset($errors['new_password'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['new_password']); ?></p>
                     <?php endif; ?>
@@ -93,14 +92,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="input-group">
                     <label for="confirm_password">Confirm New Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        value="<?php echo isset($confirm_password) ? htmlspecialchars($confirm_password) : ''; ?>"
-                        required>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
                     <?php if (isset($errors['confirm_password'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['confirm_password']); ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit">Reset Password</button>
+                <button type="submit" class="btn">Reset Password</button>
             </form>
         </div>
     </div>

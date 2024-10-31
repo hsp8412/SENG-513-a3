@@ -4,10 +4,6 @@ include 'db.php';
 
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $errors = [];
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];
 
@@ -55,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Execute the statement and bind the parameters directly in the execute() method
         if ($stmt->execute([$username, $hashedPassword, $salt])) {
+            $_SESSION['success'] = 'Registration successful! Please log in.';
             // Redirect to index if registration is successful
             header('Location: /');
             exit();
@@ -84,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="input-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username"
-                        value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>"></input>
+                        value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>" />
                     <?php if (isset($errors['username'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['username']); ?></p>
                     <?php endif; ?>
@@ -92,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="input-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"></input>
+                    <input type="password" id="password" name="password" />
                     <?php if (isset($errors['password'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['password']); ?></p>
                     <?php endif; ?>
@@ -100,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="input-group">
                     <label for="password">Confirm Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password"></input>
+                    <input type="password" id="confirm_password" name="confirm_password" />
                     <?php if (isset($errors['confirm_password'])): ?>
                         <p style="color:red;"><?php echo htmlspecialchars($errors['confirm_password']); ?></p>
                     <?php endif; ?>
