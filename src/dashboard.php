@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'db.php';
 
 
 if (!isset($_SESSION['user_id'])) {
@@ -7,6 +8,50 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+if ($_SESSION['is_admin']) {
+    header('Location: admin.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    if (empty($current_password)) {
+        $errors['current_password'] = 'Current password is required.';
+    }
+
+    if (empty($new_password)) {
+        $errors['new_password'] = 'New password is required.';
+    }
+
+    if (empty($confirm_password)) {
+        $errors['confirm_password'] = 'Confirm password is required.';
+    }
+
+    if ($new_password !== $confirm_password) {
+        $errors['confirm_password'] = 'Passwords do not match.';
+    }
+
+    if (empty($errors)) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_SESSION['user_id']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($user['salt'] . $current_password, $user['password'])) {
+            $new_password = password_hash($user['salt'] . $new_password, PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET password = ? WHERE id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$new_password, $_SESSION['user_id']]);
+            header('Location: logout.php');
+            exit();
+        } else {
+            $errors['current_password'] = 'Invalid password.';
+        }
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -27,19 +72,34 @@ if (!isset($_SESSION['user_id'])) {
     <div class="reset-pwd-container">
         <div class="card">
             <h2 class="title">Reset Password</h2>
-            <form action="reset_password.php" method="POST">
+            <form action="" method="POST">
                 <div class="input-group">
                     <label for="current_password">Current Password:</label>
-                    <input type="password" id="current_password" name="current_password" required>
+                    <input type="password" id="current_password" name="current_password"
+                        value="<?php echo isset($$current_password) ? htmlspecialchars($current_password) : ''; ?>"
+                        required>
+                    <?php if (isset($errors['username'])): ?>
+                        <p style="color:red;"><?php echo htmlspecialchars($errors['current_password']); ?></p>
+                    <?php endif; ?>
+                </div>
+                <div class="input-group">
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password"
+                        value="<?php echo isset($new_password) ? htmlspecialchars($new_password) : ''; ?>" required>
+                    <?php if (isset($errors['new_password'])): ?>
+                        <p style="color:red;"><?php echo htmlspecialchars($errors['new_password']); ?></p>
+                    <?php endif; ?>
                 </div>
 
-
-                <label for="new_password">New Password:</label>
-                <input type="password" id="new_password" name="new_password" required>
-
-                <label for="confirm_password">Confirm New Password:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
-
+                <div class="input-group">
+                    <label for="confirm_password">Confirm New Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password"
+                        value="<?php echo isset($confirm_password) ? htmlspecialchars($confirm_password) : ''; ?>"
+                        required>
+                    <?php if (isset($errors['confirm_password'])): ?>
+                        <p style="color:red;"><?php echo htmlspecialchars($errors['confirm_password']); ?></p>
+                    <?php endif; ?>
+                </div>
                 <button type="submit">Reset Password</button>
             </form>
         </div>
