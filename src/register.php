@@ -2,6 +2,16 @@
 session_start();
 include 'db.php';
 
+if (isset($_SESSION['user_id'])) {
+    $is_admin = $_SESSION['is_admin'];
+    if ($is_admin) {
+        header('Location: admin.php');
+    } else {
+        header('Location: dashboard.php');
+    }
+    exit();
+}
+
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
