@@ -152,6 +152,7 @@ tr:nth-child(even) {
   align-items: center;
   justify-content: center;
   width: 100%;
+  gap: 10px;
 }
 
 .search-bar {
@@ -177,4 +178,8 @@ tr:nth-child(even) {
 .unauthorize-container p {
   font-size: 32px;
   font-weight: bold;
+}
+
+.download-csv {
+  text-decoration: none;
 }

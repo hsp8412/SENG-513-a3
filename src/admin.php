@@ -11,6 +11,28 @@ try {
 } catch (PDOException $e) {
     die("Error fetching users: " . $e->getMessage());
 }
+
+$delete_error = '';
+$delete_success = '';
+$download_error = '';
+
+
+if (isset($_SESSION['delete_error'])) {
+    $delete_error = $_SESSION['delete_error'];
+    unset($_SESSION['delete_error']);
+}
+
+if (isset($_SESSION['delete_success'])) {
+    $delete_success = $_SESSION['delete_success'];
+    unset($_SESSION['delete_success']);
+}
+
+if (isset($_SESSION['download_error'])) {
+    $download_error = $_SESSION['download_error'];
+    unset($_SESSION['download_error']);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +49,15 @@ try {
 <body>
     <div>
         <div class="admin-header">
+            <?php if ($delete_success != ''): ?>
+                <p style="color: green;"><?php echo htmlspecialchars($delete_success); ?></p>
+            <?php endif; ?>
+            <?php if ($delete_error != ''): ?>
+                <p style="color: red;"><?php echo htmlspecialchars($delete_error); ?></p>
+            <?php endif; ?>
+            <?php if ($download_error != ''): ?>
+                <p style="color: red;"><?php echo htmlspecialchars($download_error); ?></p>
+            <?php endif; ?>
             <h1 class="admin-title">Welcome to the admin page!</h1>
             <a href="logout.php" class="admin-btn">Log Out</a>
         </div>
@@ -62,6 +93,7 @@ try {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <a href="download_csv.php" class="btn download-csv">Download as CSV</a>
             <?php endif; ?>
         </div>
     </div>

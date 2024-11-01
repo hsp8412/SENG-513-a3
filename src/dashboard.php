@@ -47,8 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "UPDATE users SET password = ? WHERE id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$new_password, $_SESSION['user_id']]);
-            header('Location: logout.php');
+            // JavaScript alert and redirect
+            echo "<script>
+             alert('Password changed successfully. You will be logged out.');
+             window.location.href = 'logout.php';
+           </script>";
             exit();
+            // header('Location: logout.php');
+            // exit();
         } else {
             $errors['current_password'] = 'Invalid password.';
         }

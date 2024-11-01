@@ -20,9 +20,10 @@ if (isset($_POST['delete']) && !empty($_POST['id'])) {
     if (empty($row)) {
         $_SESSION['delete_error'] = "User not found.";
     } else {
+        $username = $row['username'];
         $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$id]);
-        $_SESSION['delete_msg'] = "User delete successfully.";
+        $_SESSION['delete_success'] = "User '$username' delete successfully.";
     }
 }
 

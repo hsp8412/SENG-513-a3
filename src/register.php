@@ -21,9 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($password)) {
         $errors['password'] = 'Password is required.';
-    } elseif (strlen($password) < 6) {
-        $errors['password'] = 'Password must be at least 6 characters.';
+    } elseif (
+        strlen($password) < 8 ||
+        !preg_match('/[A-Z]/', $password) ||
+        !preg_match('/[a-z]/', $password) ||
+        !preg_match('/\d/', $password) ||
+        !preg_match('/[^a-zA-Z\d]/', $password)
+    ) {
+        $errors['password'] = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
     }
+
 
     if ($password !== $confirm_password) {
         $errors['confirm_password'] = 'Passwords do not match.';
