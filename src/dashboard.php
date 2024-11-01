@@ -25,7 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($new_password)) {
-        $errors['new_password'] = 'New password is required.';
+        $errors['new_password'] = 'Password is required.';
+    } elseif (
+        strlen($new_password) < 8 ||
+        !preg_match('/[A-Z]/', $new_password) ||
+        !preg_match('/[a-z]/', $new_password) ||
+        !preg_match('/\d/', $new_password) ||
+        !preg_match('/[^a-zA-Z\d]/', $new_password)
+    ) {
+        $errors['new_password'] = 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.';
     }
 
     if (empty($confirm_password)) {
@@ -35,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($new_password !== $confirm_password) {
         $errors['confirm_password'] = 'Passwords do not match.';
     }
+
+
 
     if (empty($errors)) {
         $sql = "SELECT * FROM users WHERE id = ?";
